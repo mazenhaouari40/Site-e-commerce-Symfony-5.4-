@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Index{% endblock %}
+      
+         {% block stylesheets %}
+            {# {{ encore_entry_link_tags('app') }} #}
+
+         {% endblock %}
+    
+
+{% block body %}
+
+
+
+    <div class="bg-light p-3 mt-3">
+        <h1>Confirmation de commande</h1>
+    </div>
+
+{% if produits | length > 0 %}
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Produit</th>
+            <th>Prix</th>
+            <th>Quantite</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for produit in produits %}
+     <td><img src="{{asset('/image/produit/'~produit.produit.image)}}" width="150" height="150" alt=""></td>
+      <td>{{produit.produit.nom}}</td>
+          <td>{{produit.produit.prix|number_format(3, '.', ',')}} DT</td>
+      <td>{{produit.quantite}}</td>
+      <td>{{(produit.quantite * produit.produit.prix)|number_format(3, '.', ',')}} DT</td>
+
+                 
+    </tbody>
+
+    {% endfor %}
+    <td colspan="3">Total : {{total|number_format(3, '.', ',')}} DT </td>
+<tr>
+      <td colspan="3">Voulez vous passer la commande ? </td>
+                 <td><a href="{{ path('commande_ajouter')}}" class="btn btn-success"> Je Confirme</a></td>
+    </tr>             
+
+{% endif %}
+
+
+
+
+
+{% endblock %}
+

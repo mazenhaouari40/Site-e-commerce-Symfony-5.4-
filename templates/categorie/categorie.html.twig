@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Categories{% endblock %}
+        
+         {% block stylesheets %}
+            {# {{ encore_entry_link_tags('app') }} #}
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+                <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+         {% endblock %}
+        
+
+{% block body %}
+    <h1>Nos Categories : </h1>
+    <a href="{{ path('categorie_ajouter')}}">Ajouter Categories </a>
+
+<hr>
+<table id="example" class="table table-striped" style="width:100%">
+        <thead>
+    <tr>
+        <th>Image</th>
+        <th>Nom </th>
+        <th>statut</th>
+        <th>action</th>
+    </tr>
+        </thead>
+    <tbody>
+{% for categorie in categories %}
+    
+    <tr>
+        <td scope="row">
+        <img src="{{asset('/image/categorie/'~categorie.image )}}" alt="" width="100" height="100">
+        </td>
+        <td>{{categorie.nom}}</td>
+        <td>{{categorie.statut}}</td>
+                <td>
+                 <a href="{{ path('categorie_editer',{id : categorie.id}) }}" class="btn btn-success"> Editer </a> 
+               
+                 <a href data-toggle="modal" data-target="#confirmationModal" 
+                    data-remove-url="{{ url('categorie_supprimer',{id : categorie.id} ) }}" 
+                    class="btn btn-danger deleteBtn">Supprimer</a>
+                </td>
+    </tr>
+{% endfor %}
+        </tbody>
+    </table>
+
+
+
+    <div class="modal fade" id="confirmationModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h4>Suppression</h4>
+                        <p>Êtes-vous sûr de vouloir supprimer cette categorie ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="btnNo" data-dismiss="modal">
+                            <i class="fa fa-ban" aria-hidden="true"></i> Annuler
+                        </button>
+                        <a href="{{ path('categorie_') }}" class="btn w-sm btn-danger remove_item">Supprimer</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+{% endblock %}
+
+
+
+ {% block javascripts %}
+        {# <script src="https://code.jquery.com/jquery-3.5.1.js" ></script> #}
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" ></script>
+         <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js" ></script>
+         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+
+    <script src="{{asset('/js/modal.js')}}"></script>
+    <script src="{{asset('/js/datatable.js')}}"></script>
+ {% endblock %}

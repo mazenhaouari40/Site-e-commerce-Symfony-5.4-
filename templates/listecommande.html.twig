@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des articles{% endblock %}
+        
+         {% block stylesheets %}
+            {# {{ encore_entry_link_tags('app') }} #}
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+                <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+         {% endblock %}
+        
+{% block body %}
+    <h1>Liste de Commande  :</h1>
+<hr>
+<table id="example" class="table table-striped" style="width:100%">
+        <thead>
+    <tr>
+        <th>user</th>
+        <th>produit </th>
+        <th>quantite</th>
+        <th>prix</th>
+        <th>date</th>
+        <th>total</th>
+        <th>statut</th>
+        <th>action</th>
+    </tr>
+        </thead>
+    <tbody>
+{% for commande in commandes %}
+    <tr>
+    <td rowspan=>{{commande.user.username}}</td>
+    <td >
+       {% for comproduit in commande.comproduits %}
+            * {{comproduit.produit.nom}} <br>
+        {% endfor %}
+    </td>
+
+    <td >
+       {% for comproduit in commande.comproduits %}
+            {{comproduit.quantite}} <br>
+        {% endfor %}
+    </td>
+    <td >
+       {% for comproduit in commande.comproduits %}
+            {{comproduit.produit.prix|number_format(3, '.', ',')}} <br>
+        {% endfor %}
+    </td>
+    <td  >{{commande.date|date('d-m-Y')}}</td>          
+    <td  >{{commande.total|number_format(3, '.', ',')}} DT</td>
+    <td  >{{commande.statut}}</td> 
+    <td >
+                 <a href="{{ path('commande_editer',{id : commande.id}) }}" class="btn btn-success"> Editer </a> 
+    </td>
+    </tr>
+{% endfor %}
+        
+
+        </tbody>
+    </table>
+
+
+{% endblock %}
+
+
+
+ {% block javascripts %}
+            {# {{ encore_entry_script_tags('app') }}  #}
+                    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" ></script>
+                    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js" ></script>
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+                   <script src="{{asset('/js/modal.js')}}"></script>
+                   <script src="{{asset('/js/datatable.js')}}"></script>
+ {% endblock %}

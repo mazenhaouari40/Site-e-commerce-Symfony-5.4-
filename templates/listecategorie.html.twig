@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Index{% endblock %}
+      
+         {% block stylesheets %}
+            {# {{ encore_entry_link_tags('app') }} #}
+                 <link rel = "stylesheet" href = "{{ asset('/stylesheet/listecategorie.css')}}">
+
+         {% endblock %}
+        
+         {% block javascripts %}
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js
+"></script>
+
+
+        {% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="d-flex justify-content-center align-items-center mt-5"> <button class="btn btn-dark">OUR CATEGORIES</button> </div>
+    <div class="d-flex justify-content-center mt-3"> <span class="text text-center">Finding Best Products Now<br> in Your Fingertips</span> </div>
+    <div class="row mt-2 g-4">
+  {% for categorie in categories%}
+  {% if categorie.statut == 'activé'%}
+ <div class="col-md-3">
+            <div class="card p-1">
+                <div class="d-flex justify-content-between align-items-center p-2">
+                    <div class="flex-column lh-1 imagename"> <span>{{categorie.nom}}</span>  </div>
+                    <div> <a href="{{ path('afficher_produit',{id : categorie.id}) }}"> <img src = "{{asset('/image/categorie/'~categorie.image)}}"  height="100" width="100" /></a> </div>
+                </div>
+            </div>
+</div> 
+{% endif %}
+  {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

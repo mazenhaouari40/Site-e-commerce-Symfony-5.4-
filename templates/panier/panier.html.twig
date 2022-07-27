@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+
+ {% block javascripts %}
+            {# {{ encore_entry_script_tags('app') }}  #}
+                   {# <script src="https://code.jquery.com/jquery-3.5.1.js" ></script> #}
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+                   <script src="{{asset('/js/modal.js')}}"></script>
+
+
+ {% endblock %}
+{% block body %}
+
+    <div class="bg-light p-3 mt-3">
+        <h1>Votre panier :</h1>
+    </div>
+
+{% if produits | length > 0 %}
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Produit</th>
+            <th>Prix</th>
+            <th>Quantite</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for produit in produits %}
+     <td><img src="{{asset('/image/produit/'~produit.produit.image)}}" width="150" height="150" alt=""></td>
+      <td>{{produit.produit.nom}}</td>
+          <td>{{produit.produit.prix|number_format(3, '.', ',')}}</td>
+      <td>{{produit.quantite}}</td>
+      <td>{{ (produit.produit.prix * produit.quantite)|number_format(3, '.', ',')}}</td>
+                      <td> <a href data-toggle="modal" data-target="#confirmationModal" 
+                    data-remove-url="{{ url('panier_supprimer',{id : produit.produit.id} ) }}" 
+                    class="btn btn-danger deleteBtn">Supprimer</a></td>
+    </tbody>
+
+    {% endfor %}
+    <tfoot>
+      <td colspan="4">Total :</td>
+      <td>{{total|number_format(3, '.', ',')}} DT</td>
+                 <td>
+                 {% if is_granted('ROLE_USER') %}
+                 <a href="{{ path('panier_confirmation')}}" class="btn btn-success">Commander</a>   
+                 {% else %}
+                        <a href data-toggle="modal" data-target="#connexion" 
+                       data-remove-url="{{ path('panier_confirmation')}}" 
+                           class="btn btn-success"> commander</a> 
+                 {% endif %}
+                 </td>
+    </tfoot>
+{% else %}
+aucun commande disponible
+{% endif %}
+
+
+
+
+    <div class="modal fade" id="confirmationModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h4>Suppression</h4>
+                        <p>Êtes-vous sûr de vouloir supprimer cette produit ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="btnNo" data-dismiss="modal">
+                            <i class="fa fa-ban" aria-hidden="true"></i> Annuler
+                        </button>
+                        <a href="{{ path('panier_') }}" class="btn w-sm btn-danger remove_item">Supprimer</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+   <div class="modal fade" id="connexion" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h4>Connexion</h4>
+                        <p>Vous devez être connecté pour commander   
+                            <a href="{{ path('app_login') }}"> Connecter</a> 
+                        </p>
+                    </div>      
+                </div>
+            </div>
+    </div>
+
+
+
+
+{% endblock %}
